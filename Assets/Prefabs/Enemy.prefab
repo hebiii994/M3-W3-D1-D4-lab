@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9217543167973572163}
   - component: {fileID: 9101501988530677054}
   - component: {fileID: 8177728692092264448}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5208609784f7a7840a6c612c9f2f473b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speed: 2
 --- !u!61 &9101501988530677054
 BoxCollider2D:
   m_ObjectHideFlags: 0
