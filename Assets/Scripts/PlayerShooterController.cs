@@ -29,6 +29,7 @@ public class PlayerShooterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _enemiesList.RemoveAll(item => item == null);
         GameObject enemiesToHit = FindNearestEnemy(_enemiesList);
         if (Time.time - lastShotTime > _fireRate)
         {
@@ -56,7 +57,7 @@ public class PlayerShooterController : MonoBehaviour
         {
             if (enemy == null)
             {
-                enemiesList.Remove(enemy);
+                
                 continue;
             }
 

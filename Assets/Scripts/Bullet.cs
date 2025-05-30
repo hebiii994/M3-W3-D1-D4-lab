@@ -14,12 +14,13 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        Destroy(gameObject, 5);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        _rb.velocity = new Vector2(_speed, _rb.velocity.y);
+        _rb.velocity = Dir * _speed;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
