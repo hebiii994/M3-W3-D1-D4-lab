@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float _speed = 1.7f;
-    [SerializeField] private float health = 10f;
+    [SerializeField] private float _speed = 2.0f;
+    [SerializeField] private float _health = 10f;
+    [SerializeField] private float _baseScale = 1.0f;
     [SerializeField] private PowerUp _powerUpPrefab;
     private GameObject _playerGameObject;
     [SerializeField][Range(0f, 1f)] private float _dropChance = 0.25f;
 
+    private float _currentHealth;
+    private float _currentSpeed;
+    private bool _isDead = false;
 
     // Start is called before the first frame update
 
     private void Awake()
     {
+        Setup(_health, _speed, _baseScale);
         _playerGameObject = GameObject.FindGameObjectWithTag("Player");
 
         if (_playerGameObject == null)
@@ -23,6 +28,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void Setup(float health, float speed, float scale)
+    {
+        _currentHealth = health;
+        _currentSpeed = speed;
+        transform.localScale = Vector3.one * scale;
+    }
     private void OnEnable()
     {
         if (PlayerShooterController.instance != null)
@@ -50,22 +61,27 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EnemyMovement();
+        EnemyMovement(_currentSpeed);
     }
 
-    public void EnemyMovement()
+    public void EnemyMovement(float speed)
     {
         if (_playerGameObject != null)
         {
-            Vector2 newPosition = Vector2.MoveTowards(transform.position, _playerGameObject.transform.position, _speed * Time.deltaTime);
+            Vector2 newPosition = Vector2.MoveTowards(transform.position, _playerGameObject.transform.position, speed * Time.deltaTime);
             transform.position = newPosition;
         }
     }
     public void TakeDamage(float damage)
     {
-        health -= damage;
-        if (health <= 0)
+        if (_isDead)
         {
+            return;
+        }
+        _health -= damage;
+        if (_health <= 0 && !_isDead)
+        {          
+            _isDead = true;
             Die();
         }
     }

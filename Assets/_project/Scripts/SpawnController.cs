@@ -5,11 +5,11 @@ using UnityEngine;
 public class SpawnController : MonoBehaviour
 {
     [SerializeField] private Enemy _enemyPrefab;
-    [SerializeField] private float spawnInterval = 0f;
+    //[SerializeField] private float spawnInterval = 0f;
 
     //private int enemiesToSpawnThisRound;
     //private int enemiesSpawned;
-    private float timer;
+    //private float timer;
 
 
     // Start is called before the first frame update
@@ -20,43 +20,53 @@ public class SpawnController : MonoBehaviour
             Debug.LogError("Prefab del nemico non assegnato nello SpawnController!");
         }
 
-        if (RoundManager.instance == null)
+        //if (RoundManager.instance == null)
         
-        {
-            Debug.Log("Round Manager assente.");
-        }
+        //{
+        //    Debug.Log("Round Manager assente.");
+        //}
         
-        timer = 0;
+        //timer = 0;
 
+    }
+
+    public Enemy SpawnEnemy()
+    {
+        if (_enemyPrefab != null)
+        {
+            Enemy newEnemyInstance = Instantiate(_enemyPrefab, transform.position, Quaternion.identity);
+            return newEnemyInstance;
+        }
+        return null;
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (RoundManager.instance.totalEnemiesSpawnedInRound >= RoundManager.instance.enemiesPerRound && RoundManager.instance.totalEnemiesEliminatedInRound == RoundManager.instance.enemiesPerRound)
-        {
-            if (RoundManager.instance.currentRound < RoundManager.instance.maxRounds)
-            {
-                RoundManager.instance.StartNewRound();
-            }
+    //void Update()
+    //{
+    //    if (RoundManager.instance.totalEnemiesSpawnedInRound >= RoundManager.instance.enemiesPerRound && RoundManager.instance.totalEnemiesEliminatedInRound == RoundManager.instance.enemiesPerRound)
+    //    {
+    //        if (RoundManager.instance.currentRound < RoundManager.instance.maxRounds)
+    //        {
+    //            RoundManager.instance.StartNewRound();
+    //        }
             
-            return;
-        }
+    //        return;
+    //    }
 
-        timer += Time.deltaTime;
+    //    timer += Time.deltaTime;
 
-        if (timer > spawnInterval && RoundManager.instance.totalEnemiesSpawnedInRound < RoundManager.instance.enemiesPerRound)
-        {
-            if (RoundManager.instance.totalEnemiesSpawnedInRound > 0 && spawnInterval == 0)
-            {
-                spawnInterval = 5f;
-            }
+    //    if (timer > spawnInterval && RoundManager.instance.totalEnemiesSpawnedInRound < RoundManager.instance.enemiesPerRound)
+    //    {
+    //        if (RoundManager.instance.totalEnemiesSpawnedInRound > 0 && spawnInterval == 0)
+    //        {
+    //            spawnInterval = 5f;
+    //        }
 
-            Instantiate(_enemyPrefab, transform.position, Quaternion.identity);
-            RoundManager.instance.totalEnemiesSpawnedInRound++;
-            timer = 0;
+    //        Instantiate(_enemyPrefab, transform.position, Quaternion.identity);
+    //        RoundManager.instance.totalEnemiesSpawnedInRound++;
+    //        timer = 0;
 
-        }
+    //    }
         
-    }
+    //}
 }

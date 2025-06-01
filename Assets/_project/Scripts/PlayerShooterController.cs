@@ -16,16 +16,29 @@ public class PlayerShooterController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource == null)
+        {
+            Debug.Log("Associare Audio lancio freccie a Gun");
+        }
     }
 
+    //gestione variabili sparo
     [SerializeField] private float _fireRate = 1.0f;
-    private float lastShotTime = 0f;
     [SerializeField] private float _fireRange = 6.0f;
+    private float lastShotTime = 0f;
+
+    //variabili prefab e GO
     [SerializeField] private Bullet _bulletPrefab;
+    [SerializeField] private AudioClip _arrowFireSound;
+    private AudioSource _audioSource;
     public List<GameObject> _enemiesList;
     private GameObject _currentTarget;
 
-    // Start is called before the first frame update
+
+
+    
     void Start()
     {
 
@@ -36,6 +49,7 @@ public class PlayerShooterController : MonoBehaviour
             Debug.Log("Non è stato assegnato un proiettile al player");
         }
     }
+  
 
     // Update is called once per frame
     void Update()
@@ -113,6 +127,11 @@ public class PlayerShooterController : MonoBehaviour
         Bullet b = Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
         b.Dir = direction;
         b.transform.up = direction;
+
+        if (_arrowFireSound != null)
+        {
+            _audioSource.PlayOneShot(_arrowFireSound);
+        }
     }
 
     public void AddEnemyToList(GameObject enemy)
@@ -132,6 +151,10 @@ public class PlayerShooterController : MonoBehaviour
 
     public void FireRateDown()
     {
+        if (_fireRate <= 0.4f)
+        {
+            return;
+        }
         _fireRate -= 0.1f;
     }
    

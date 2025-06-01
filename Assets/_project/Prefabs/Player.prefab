@@ -223,6 +223,7 @@ MonoBehaviour:
   _fireRate: 1
   _fireRange: 10
   _bulletPrefab: {fileID: 7408488333433328945, guid: c7f99079c7e55424aa3bcde90c3df178, type: 3}
+  _arrowFireSound: {fileID: 8300000, guid: f2bf054b736db74429cdb8b7c96f7769, type: 3}
   _enemiesList: []
 --- !u!1 &5655808111356559894
 GameObject:
