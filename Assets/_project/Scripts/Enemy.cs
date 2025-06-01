@@ -4,17 +4,43 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float _speed = 2.0f;
-    private GameObject _player;
-    private PlayerController _playerController;
-    
+    [SerializeField] private float _speed = 1.7f;
+    [SerializeField] private float health = 10f;
+    [SerializeField] private PowerUp _powerUpPrefab;
+    private GameObject _playerGameObject;
+    [SerializeField][Range(0f, 1f)] private float _dropChance = 0.25f;
+
+
     // Start is called before the first frame update
 
     private void Awake()
     {
-        _playerController = FindObjectOfType<PlayerController>();
-        _player = _playerController.gameObject;
+        _playerGameObject = GameObject.FindGameObjectWithTag("Player");
 
+        if (_playerGameObject == null)
+        {
+            Debug.LogError("Nemico non riesce a trovare un oggetto con il tag 'Player' nella scena!");
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (PlayerShooterController.instance != null)
+        {
+            PlayerShooterController.instance.AddEnemyToList(this.gameObject);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (PlayerShooterController.instance != null)
+        {
+            PlayerShooterController.instance.RemoveEnemyFromList(this.gameObject);
+        }
+        if (Random.Range(0f,1f) <= _dropChance )
+        {
+            PowerUp pw = Instantiate(_powerUpPrefab, transform.position,Quaternion.identity);
+        }
     }
     void Start()
     {
@@ -29,11 +55,26 @@ public class Enemy : MonoBehaviour
 
     public void EnemyMovement()
     {
-        if (_playerController != null)
+        if (_playerGameObject != null)
         {
-            Vector2 newPosition = Vector2.MoveTowards(transform.position, _playerController.transform.position, _speed * Time.deltaTime);
+            Vector2 newPosition = Vector2.MoveTowards(transform.position, _playerGameObject.transform.position, _speed * Time.deltaTime);
             transform.position = newPosition;
         }
+    }
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        
+        Destroy(this.gameObject);
+        RoundManager.instance.totalEnemiesEliminatedInRound++;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

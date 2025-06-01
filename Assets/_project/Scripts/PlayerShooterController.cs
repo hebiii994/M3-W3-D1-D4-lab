@@ -4,22 +4,33 @@ using UnityEngine;
 
 public class PlayerShooterController : MonoBehaviour
 {
-    [SerializeField] private float _fireRate = 0.5f;
+    public static PlayerShooterController instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    [SerializeField] private float _fireRate = 1.0f;
     private float lastShotTime = 0f;
-    [SerializeField] private float _fireRange = 10.0f;
+    [SerializeField] private float _fireRange = 6.0f;
     [SerializeField] private Bullet _bulletPrefab;
-    
     public List<GameObject> _enemiesList;
+    private GameObject _currentTarget;
 
     // Start is called before the first frame update
     void Start()
     {
 
-        _enemiesList = new List<GameObject>(GameObject.FindGameObjectsWithTag("Enemy"));
-        if (_enemiesList.Count > 0)
-        {
-            Debug.Log("Si comincia!");
-        }
+        _enemiesList = new List<GameObject>();
+        
         if (_bulletPrefab == null)
         {
             Debug.Log("Non è stato assegnato un proiettile al player");
@@ -29,17 +40,34 @@ public class PlayerShooterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _enemiesList.RemoveAll(item => item == null);
-        GameObject enemiesToHit = FindNearestEnemy(_enemiesList);
+
+
+        if (_currentTarget == null)
+        {
+            _enemiesList.RemoveAll(item => item == null);
+        }
+
+        if (_currentTarget == null)
+        {
+            _currentTarget = FindNearestEnemy(_enemiesList);
+            if (_currentTarget == null)
+            {
+                return;
+            }
+        }
+        float distanceToCurrentTarget = Vector3.Distance(transform.position, _currentTarget.transform.position);
+        if (distanceToCurrentTarget > _fireRange)
+        {
+            _currentTarget = null;
+            return;
+        }
+
         if (Time.time - lastShotTime > _fireRate)
         {
-            if (enemiesToHit != null)
-            {
-                Vector2 direction = (enemiesToHit.transform.position - transform.position).normalized;
+                Vector2 direction = (_currentTarget.transform.position - transform.position).normalized;
                 lastShotTime = Time.time;
                 Shoot(direction);
-                
-            }
+
         }
         
     }
@@ -51,6 +79,7 @@ public class PlayerShooterController : MonoBehaviour
         // devo però restituire solo il più vicino quindi forse meglio passare solo 1 valore ma leggendo dalla lista inizialmente creavo un secondo array con i nemici in range
 
         GameObject enemiesInRange = null;
+        float minDistance = Mathf.Infinity;
         Vector3 playerPosition = transform.position;
 
         foreach (GameObject enemy in enemiesList)
@@ -65,7 +94,7 @@ public class PlayerShooterController : MonoBehaviour
 
             float distanceToEnemies = Vector3.Distance(playerPosition, enemy.transform.position);
 
-            if (distanceToEnemies <= _fireRange)
+            if (distanceToEnemies <= _fireRange && distanceToEnemies < minDistance)
             {
                 enemiesInRange = enemy;
             }
@@ -78,8 +107,32 @@ public class PlayerShooterController : MonoBehaviour
 
     public void Shoot(Vector2 direction)
     {
+        
+
         // se c'è un nemico vicino deve creare un bullet e dare al suo RB velocità e direzione
-        Bullet b = Instantiate(_bulletPrefab, transform.position, _bulletPrefab.transform.rotation);
+        Bullet b = Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
         b.Dir = direction;
+        b.transform.up = direction;
     }
+
+    public void AddEnemyToList(GameObject enemy)
+    {
+        if (!_enemiesList.Contains(enemy))
+        {
+            _enemiesList.Add(enemy);
+        }
+    }
+    public void RemoveEnemyFromList(GameObject enemy)
+    {
+        if (_enemiesList.Contains(enemy))
+        {
+            _enemiesList.Remove(enemy);
+        }
+    }
+
+    public void FireRateDown()
+    {
+        _fireRate -= 0.1f;
+    }
+   
 }

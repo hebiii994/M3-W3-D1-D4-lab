@@ -8,6 +8,9 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] private float _speed = 1.0f;
     [SerializeField] private Rigidbody2D _rb;
+    [SerializeField] private float _damage = 5.0f;
+    [SerializeField] private Enemy Enemy;
+    
     public Vector2 Dir {  get; set; }
     
     // Start is called before the first frame update
@@ -27,8 +30,13 @@ public class Bullet : MonoBehaviour
     {
         if (collision.collider.CompareTag("Enemy"))
         {
-            Destroy(collision.gameObject);
-            Destroy(gameObject);
+            Enemy enemyComponent = collision.collider.GetComponent<Enemy>();
+            enemyComponent.TakeDamage(_damage);
+            Destroy(this.gameObject);
+        }
+        else if (collision.collider.CompareTag("Bush"))
+        {
+            Destroy(this.gameObject);
         }
     }
 }
