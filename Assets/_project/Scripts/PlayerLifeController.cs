@@ -6,6 +6,7 @@ public class PlayerLifeController : MonoBehaviour
 {
     [SerializeField] private int _maxHealth = 100;
     private int _currentHealth;
+    private PlayerController _playerController;
 
     public int CurrentHealth => _currentHealth;
     public int MaxHealth => _maxHealth;
@@ -18,6 +19,11 @@ public class PlayerLifeController : MonoBehaviour
     private void Awake()
     {
         _currentHealth = _maxHealth;
+        _playerController = GetComponent<PlayerController>();
+        if (_playerController == null)
+        {
+            Debug.LogError("PlayerController non trovato su questo GameObject!");
+        }
     }
 
 
@@ -27,11 +33,20 @@ public class PlayerLifeController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Heal(int amount)
     {
-        
-    }
+        if (_isDead) return; 
 
+        _currentHealth += amount;
+        
+        if (_currentHealth > _maxHealth)
+        {
+            _currentHealth = _maxHealth;
+        }
+
+        Debug.Log($"Player curato. Vita attuale: {_currentHealth}/{_maxHealth}");
+        OnHealthChanged?.Invoke(_currentHealth, _maxHealth); // Notifica l'UI
+    }
     public void TakeDamage(int damageAmount)
     {
         if (_isDead) return;
@@ -44,6 +59,11 @@ public class PlayerLifeController : MonoBehaviour
 
         Debug.Log($"Giocatore ha subito {damageAmount} danni. Vita rimasta: {_currentHealth}");
         OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
+
+        if (!_isDead && _playerController != null) 
+        {
+            _playerController.TriggerMeleeAttackAnimation();
+        }
 
         if (_currentHealth <= 0)
         {

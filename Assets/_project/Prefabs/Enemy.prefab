@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9101501988530677054}
   - component: {fileID: 8177728692092264448}
   - component: {fileID: 8186124506940387364}
+  - component: {fileID: 634347256063758130}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -45,7 +46,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5089377940351387002}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.8867924, g: 0.011712307, b: 0.78561264, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -102,14 +103,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5208609784f7a7840a6c612c9f2f473b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
-  _health: 10
-  _baseScale: 1
-  _powerUpPrefab: {fileID: 1626668535704912885, guid: 0ed9eb53c8f44a84890e9517d29fe489, type: 3}
+  _speed: 1.5
+  _health: 3
+  _baseScale: 0.8
   _rbEnemy: {fileID: 0}
-  _dropChance: 0.25
   _damageToPlayer: 10
-  _bounceForce: 7.5
+  _bounceForce: 4
+  _powerUpDropTable:
+  - powerUpPrefab: {fileID: 2840640630751237050, guid: 4b5e7e28cbdea0a4cb83aaccc485a423, type: 3}
+    weight: 2
+  - powerUpPrefab: {fileID: 2840640630751237050, guid: 2091e170c2607d142834d036a7da9402, type: 3}
+    weight: 2
+  - powerUpPrefab: {fileID: 2840640630751237050, guid: 0ed9eb53c8f44a84890e9517d29fe489, type: 3}
+    weight: 1
+  _overallDropChance: 0.22
 --- !u!61 &9101501988530677054
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -278,6 +285,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &634347256063758130
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5089377940351387002}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e531ceb8ea21f044c82426f8184e0cc8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7674051099523596051
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,7 +378,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
   m_FlipX: 0
@@ -401,7 +429,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8186887093781577071}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
