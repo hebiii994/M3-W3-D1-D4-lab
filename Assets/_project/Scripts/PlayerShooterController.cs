@@ -31,7 +31,7 @@ public class PlayerShooterController : MonoBehaviour
 
     //variabili prefab e GO
     [SerializeField] private Bullet _bulletPrefab;
-    [SerializeField] private AudioClip _arrowFireSound;
+    [SerializeField] private AudioClip _arrowFireSound;   
     private AudioSource _audioSource;
     public List<GameObject> _enemiesList;
     private GameObject _currentTarget;

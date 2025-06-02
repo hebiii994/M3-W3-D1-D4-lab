@@ -8,8 +8,13 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _health = 10f;
     [SerializeField] private float _baseScale = 1.0f;
     [SerializeField] private PowerUp _powerUpPrefab;
+    [SerializeField] private Rigidbody _rbEnemy;
     private GameObject _playerGameObject;
     [SerializeField][Range(0f, 1f)] private float _dropChance = 0.25f;
+    [SerializeField] private int _damageToPlayer = 10;
+    [SerializeField] private float _bounceForce = 5f;
+
+
 
     private float _currentHealth;
     private float _currentSpeed;
@@ -21,11 +26,14 @@ public class Enemy : MonoBehaviour
     {
         Setup(_health, _speed, _baseScale);
         _playerGameObject = GameObject.FindGameObjectWithTag("Player");
+        _rbEnemy = GetComponent<Rigidbody>();
 
         if (_playerGameObject == null)
         {
             Debug.LogError("Nemico non riesce a trovare un oggetto con il tag 'Player' nella scena!");
         }
+
+        
     }
 
     public void Setup(float health, float speed, float scale)
@@ -79,8 +87,12 @@ public class Enemy : MonoBehaviour
             return;
         }
         _health -= damage;
+        //suono hit freccia
+        
+
         if (_health <= 0 && !_isDead)
-        {          
+        {
+            
             _isDead = true;
             Die();
         }
@@ -97,8 +109,18 @@ public class Enemy : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
-            Destroy(collision.gameObject);
-            
+            if (collision.gameObject.TryGetComponent<PlayerLifeController>(out PlayerLifeController playerLife))
+            {
+                
+                playerLife.TakeDamage(_damageToPlayer);
+            }
+
+            Vector2 bounceDirection = (transform.position - collision.transform.position).normalized;
+            if (_rbEnemy != null)
+            {
+                _rbEnemy.AddForce(bounceDirection * _bounceForce, (ForceMode)ForceMode2D.Impulse);
+            }
+
         }
     }
 }

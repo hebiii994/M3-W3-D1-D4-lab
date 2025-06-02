@@ -17,7 +17,7 @@ public class AudioController : MonoBehaviour
         _mainAudio.clip = ambientSound;
         _mainAudio.Play();
         _mainAudio.loop = true;
-        _mainAudio.volume = 0.15f;
+        _mainAudio.volume = 0.1f;
         
     }
 
