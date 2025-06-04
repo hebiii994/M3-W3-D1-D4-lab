@@ -55,7 +55,7 @@ public class PlayerShooterController : MonoBehaviour
 
         if (_firePoint == null)
         {
-            // Se non hai un firePoint specifico, usa la posizione del PlayerShooterController
+            
             _firePoint = transform;
             Debug.LogWarning("FirePoint non assegnato, si userà la posizione del PlayerShooterController.");
         }

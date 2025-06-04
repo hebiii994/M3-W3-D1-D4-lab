@@ -32,38 +32,38 @@ public class AudioController : MonoBehaviour
 
     private void OnEnable()
     {
-        // Iscriviti all'evento OnGameWon
-        RoundManager.OnGameWon += PlayVictoryMusicAndStopAmbient; // <-- QUESTA RIGA ASCOLTA L'EVENTO
+        
+        RoundManager.OnGameWon += PlayVictoryMusicAndStopAmbient; 
     }
 
     private void OnDisable()
     {
-        // Annulla l'iscrizione per evitare problemi
-        RoundManager.OnGameWon -= PlayVictoryMusicAndStopAmbient; // <-- QUESTA RIGA SMETTE DI ASCOLTARE
+        
+        RoundManager.OnGameWon -= PlayVictoryMusicAndStopAmbient; 
     }
 
 
     void PlayAmbientSound()
     {
-        if (_mainAudio.isPlaying && _mainAudio.clip == ambientSound) return; // Già in riproduzione
+        if (_mainAudio.isPlaying && _mainAudio.clip == ambientSound) return; 
 
         _mainAudio.clip = ambientSound;
         _mainAudio.loop = true;
-        _mainAudio.volume = 0.15f; // O il volume che preferisci
+        _mainAudio.volume = 0.15f; 
         _mainAudio.Play();
     }
 
     void PlayVictoryMusicAndStopAmbient()
     {
-        if (_victoryMusicPlayed) return; // Assicura che venga suonata una sola volta
+        if (_victoryMusicPlayed) return; 
 
         Debug.Log("AudioController ha ricevuto OnGameWon. Avvio musica vittoria.");
         _victoryMusicPlayed = true;
 
-        _mainAudio.Stop(); // Ferma la musica ambientale
+        _mainAudio.Stop(); 
         _mainAudio.clip = victorySound;
-        _mainAudio.loop = false; // La musica della vittoria di solito non è in loop
-        _mainAudio.volume = 0.6f; // O il volume che preferisci
+        _mainAudio.loop = false; 
+        _mainAudio.volume = 0.6f; 
         _mainAudio.Play();
     }
 }

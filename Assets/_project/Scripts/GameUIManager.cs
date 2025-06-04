@@ -48,7 +48,7 @@ public class GameUIManager : MonoBehaviour
     {
         if (_roundTextElement != null)
         {
-            if (totalRounds == int.MaxValue) // Controlla se siamo in modalità infinita
+            if (totalRounds == int.MaxValue) 
             {
                 _roundTextElement.text = "Round: " + currentRound + " (∞)";
             }

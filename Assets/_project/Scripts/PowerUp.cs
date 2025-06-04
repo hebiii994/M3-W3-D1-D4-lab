@@ -12,7 +12,7 @@ public class PowerUp : MonoBehaviour
     }
 
     [Header("Power-Up Settings")]
-    public PowerUpType type; // Imposta questo nell'Inspector per ogni prefab di power-up
+    public PowerUpType type; 
 
     [Header("Effect Values")]
     [SerializeField] private int _healAmount = 25; 

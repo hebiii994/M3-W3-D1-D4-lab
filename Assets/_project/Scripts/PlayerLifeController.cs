@@ -45,7 +45,7 @@ public class PlayerLifeController : MonoBehaviour
         }
 
         Debug.Log($"Player curato. Vita attuale: {_currentHealth}/{_maxHealth}");
-        OnHealthChanged?.Invoke(_currentHealth, _maxHealth); // Notifica l'UI
+        OnHealthChanged?.Invoke(_currentHealth, _maxHealth); 
     }
     public void TakeDamage(int damageAmount)
     {

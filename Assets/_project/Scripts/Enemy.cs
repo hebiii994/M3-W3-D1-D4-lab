@@ -228,6 +228,8 @@ public class Enemy : MonoBehaviour
             if (_rbEnemy != null)
             {
                 _rbEnemy.AddForce(bounceDirection * _bounceForce, ForceMode2D.Impulse);
+                Destroy(this.gameObject, 0.4f);
+                RoundManager.instance.totalEnemiesEliminatedInRound++;
             }
 
         }

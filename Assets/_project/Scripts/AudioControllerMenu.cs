@@ -25,9 +25,9 @@ public class AudioControllerMenu : MonoBehaviour
         if (_mainMenuSong != null)
         {
             _mainAudio.clip = _mainMenuSong;
-            _mainAudio.loop = true;         // La musica del menu di solito è in loop
+            _mainAudio.loop = true;         
             _mainAudio.volume = 0.5f;
-            _mainAudio.playOnAwake = false; // Controlliamo noi quando parte
+            _mainAudio.playOnAwake = false; 
             _mainAudio.Play();
             Debug.Log("Riproduzione musica menu principale: " + _mainMenuSong.name);
         }
@@ -36,9 +36,9 @@ public class AudioControllerMenu : MonoBehaviour
             Debug.LogError("MainMenuSong non assegnata allo script MainMenuAudio!");
         }
 
-        // Assicurati che il cursore del sistema operativo sia visibile nel menu
+        
         Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None; // Sblocca il cursore se era bloccato
+        Cursor.lockState = CursorLockMode.None; 
     
 }
 
